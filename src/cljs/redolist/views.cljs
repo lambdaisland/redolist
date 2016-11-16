@@ -96,7 +96,6 @@
       [:div
        [:section#todoapp
         [:header#header
-         [title]
          [todo-input]]
         (if-not @todos-empty?
           [:div
