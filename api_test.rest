@@ -1,0 +1,9 @@
+:host=http://localhost:3449
+
+#
+GET :host/todos
+
+#
+POST :host/todos
+Content-Type: application/edn
+{:title "Donate to ACLU"}

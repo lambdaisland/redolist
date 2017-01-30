@@ -5,7 +5,14 @@
                  [re-frame "0.9.1"]
                  [secretary "1.2.3"]
                  [garden "1.3.2"]
-                 [ns-tracker "0.3.1"]]
+                 [com.stuartsierra/component "0.3.2"]
+                 [org.danielsz/system "0.4.0"]
+                 [compojure "1.5.2"]
+                 [ring/ring-defaults "0.2.2"]
+                 [ring-middleware-format "0.7.2"]
+                 [ring "1.5.1"]
+                 [spicerack "0.1.1"]
+                 ]
 
   :plugins [[lein-cljsbuild "1.1.4"]
             [lein-garden "0.2.8"]]
@@ -17,7 +24,8 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "resources/public/css"]
 
-  :figwheel {:css-dirs ["resources/public/css"]}
+  :figwheel {:css-dirs ["resources/public/css"]
+             :ring-handler user/dev-ring-handler}
 
   :garden {:builds [{:id           "screen"
                      :source-paths ["src/clj"]
@@ -29,7 +37,10 @@
   {:dev
    {:dependencies [[binaryage/devtools "0.9.0"]
                    [figwheel-sidecar "0.5.9"]
-                   [com.cemerick/piggieback "0.2.1"]]
+                   [com.cemerick/piggieback "0.2.1"]
+                   [lambdaisland/garden-watcher "0.2.0"]
+                   [reloaded.repl "0.2.3"]
+                   [ns-tracker "0.3.1"]]
 
     :plugins      [[lein-figwheel "0.5.9"]]}}
 

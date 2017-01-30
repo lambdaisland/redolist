@@ -4,3 +4,5 @@
 /resources/public/js/compiled
 out
 .nrepl-port
+*.mapdb
+resources/public/css/screen.css
