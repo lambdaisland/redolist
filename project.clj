@@ -1,11 +1,11 @@
 (defproject redolist "0.1.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.229"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+                 [org.clojure/clojurescript "1.9.456"]
                  [reagent "0.6.0"]
-                 [re-frame "0.8.0"]
+                 [re-frame "0.9.1"]
                  [secretary "1.2.3"]
                  [garden "1.3.2"]
-                 [ns-tracker "0.3.0"]]
+                 [ns-tracker "0.3.1"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]
             [lein-garden "0.2.8"]]
@@ -27,11 +27,11 @@
 
   :profiles
   {:dev
-   {:dependencies [[binaryage/devtools "0.8.2"]
-                   [figwheel-sidecar "0.5.7"]
+   {:dependencies [[binaryage/devtools "0.9.0"]
+                   [figwheel-sidecar "0.5.9"]
                    [com.cemerick/piggieback "0.2.1"]]
 
-    :plugins      [[lein-figwheel "0.5.7"]]}}
+    :plugins      [[lein-figwheel "0.5.9"]]}}
 
   :cljsbuild
   {:builds
