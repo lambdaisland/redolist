@@ -24,8 +24,7 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "resources/public/css"]
 
-  :figwheel {:css-dirs ["resources/public/css"]
-             :ring-handler user/dev-ring-handler}
+  :figwheel {:css-dirs ["resources/public/css"]}
 
   :garden {:builds [{:id           "screen"
                      :source-paths ["src/clj"]
@@ -38,7 +37,7 @@
    {:dependencies [[binaryage/devtools "0.9.0"]
                    [figwheel-sidecar "0.5.9"]
                    [com.cemerick/piggieback "0.2.1"]
-                   [lambdaisland/garden-watcher "0.2.0"]
+                   [lambdaisland/garden-watcher "0.3.0"]
                    [reloaded.repl "0.2.3"]
                    [ns-tracker "0.3.1"]]
 

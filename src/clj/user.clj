@@ -6,20 +6,17 @@
             [figwheel-sidecar.system :as fw-sys]
             [garden-watcher.core :refer [new-garden-watcher]]
             [redolist.core :as core]
-            ^:keep [reloaded.repl :refer [system init start stop go reset reset-all clear suspend]]))
+            ^:keep [reloaded.repl
+                    :refer
+                    [go init reset reset-all start stop suspend resume system clear]]))
 
 (defn dev-system []
   (merge
-   (dissoc (core/app-system) :web)
+   (core/app-system)
    (component/system-map
     :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
     :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
     :garden-watcher (new-garden-watcher ['redolist.css]))))
-
-(defn dev-ring-handler
-  "Passed to Figwheel so it can pass on requests"
-  [req]
-  ((get-in reloaded.repl/system [:handler :handler]) req))
 
 (defn cljs-repl
   ([]
