@@ -1,5 +1,5 @@
 (ns redolist.events
-  (:require [re-frame.core :as re-frame :refer [debug reg-event-db]]
+  (:require [re-frame.core :as re-frame :refer [debug reg-event-db reg-event-fx]]
             [redolist.db :as db]))
 
 (reg-event-db :initialize-db
@@ -10,11 +10,21 @@
               (fn [db [_ active-panel]]
                 (assoc db :active-panel active-panel)))
 
-(reg-event-db :todos/add
-              (fn [db [_ title]]
-                (let [id (random-uuid)]
-                  (update db :todos assoc id {:id id
-                                              :title title}))))
+(reg-event-fx :todos/add
+              (fn [{:keys [db]} [_ title]]
+                (let [id (random-uuid)
+                      todo {:id id :title title}
+                      notification [:todos/added todo]]
+                  {:db (-> db
+                           (update :todos assoc id todo)
+                           (update :notifications conj notification))
+                   :dispatch-later [{:ms 3000 :dispatch [:notifications/remove notification]}]})))
+
+
+
+(reg-event-db :notifications/remove
+              (fn [db [_ n]]
+                (update db :notifications (partial remove #(identical? n %)))))
 
 (reg-event-db :todos/remove
               (fn [db [_ id]]

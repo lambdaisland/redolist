@@ -1,7 +1,12 @@
 (defproject redolist "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/clojurescript "1.9.456"]
-                 [reagent "0.6.0"]
+                 [cljsjs/react-with-addons "15.4.2-2"]
+                 [cljsjs/react-dom "15.4.2-2"]
+                 [cljsjs/react-dom-server "15.4.2-2"]
+                 [reagent "0.6.0" :exclusions [cljsjs/react
+                                               cljsjs/react-dom
+                                               cljsjs/react-dom-server]]
                  [re-frame "0.9.1"]
                  [secretary "1.2.3"]
                  [garden "1.3.2"]
@@ -11,8 +16,7 @@
                  [ring/ring-defaults "0.2.2"]
                  [ring-middleware-format "0.7.2"]
                  [ring "1.5.1"]
-                 [spicerack "0.1.1"]
-                 ]
+                 [spicerack "0.1.1"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]
             [lein-garden "0.2.8"]]

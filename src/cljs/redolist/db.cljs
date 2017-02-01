@@ -2,4 +2,5 @@
 
 (def default-db
   {:todos {}
-   :display-type :all})
+   :display-type :all
+   :notifications ()})

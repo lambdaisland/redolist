@@ -1,7 +1,16 @@
 (ns redolist.views
-    (:require [re-frame.core :as re-frame :refer [dispatch subscribe]]
-              [reagent.core :as r]
-              [redolist.helpers :refer [class->]]))
+  (:require [re-frame.core :as re-frame :refer [dispatch subscribe]]
+            [reagent.core :as r :refer [adapt-react-class]]
+            [redolist.helpers :refer [class->]]))
+
+(def css-transition-group
+  (adapt-react-class js/React.addons.CSSTransitionGroup))
+
+(defn <sub [sub]
+  (deref (subscribe sub)))
+
+(defn >evt [event]
+  (dispatch event))
 
 (def enter-key-code 13)
 
@@ -11,13 +20,11 @@
       (callback))))
 
 (defn todos-toggle []
-  (let [all-complete? (subscribe [:todos/all-complete?])]
-    (fn []
-      [:span
-       [:input#toggle-all {:type "checkbox"
-                           :checked @all-complete?
-                           :on-change #(dispatch [:todos/toggle-all])}]
-       [:label {:for "toggle-all"} "Mark all as complete"]])))
+  [:span
+   [:input#toggle-all {:type "checkbox"
+                       :checked (<sub [:todos/all-complete?])
+                       :on-change #(>evt [:todos/toggle-all])}]
+   [:label {:for "toggle-all"} "Mark all as complete"]])
 
 (defn todo-input []
   (let [title (r/atom "")]
@@ -29,7 +36,7 @@
                         :on-change #(reset! title (-> % .-target .-value))
                         :on-key-down #(when-enter %
                                         (fn []
-                                          (dispatch [:todos/add @title])
+                                          (>evt [:todos/add @title])
                                           (reset! title "")))}])))
 
 (defn todo-checkbox [id completed]
@@ -40,8 +47,8 @@
 (defn todo-edit [todo]
   (let [title (r/atom (:title todo))]
     (fn [{:keys [id] :as todo}]
-      (let [dispatch-update #(dispatch [:todos/update id {:title @title
-                                                          :editing false}])]
+      (let [dispatch-update #(>evt [:todos/update id {:title @title
+                                                      :editing false}])]
         [:input.edit {:type "text"
                       :value @title
                       :on-change #(reset! title (-> % .-target .-value))
@@ -56,52 +63,64 @@
      [:div.view
       [todo-checkbox id completed]
       [:label
-       {:on-double-click #(dispatch [:todos/update id {:editing true}])
+       {:on-double-click #(>evt [:todos/update id {:editing true}])
         :unselectable "on"
         :style {:user-select "none"
                 :-moz-user-select "none"}}
        title]
-      [:button.destroy {:on-click #(dispatch [:todos/remove id])}]]
+      [:button.destroy {:on-click #(>evt [:todos/remove id])}]]
      (if editing
        [todo-edit todo])]))
 
 (defn todos-list []
-  (let [todos (subscribe [:todos/visible])]
-    (fn []
-      [:ul#todo-list
-       (for [todo @todos]
-         ^{:key (:id todo)} [todo-item todo])])))
+  [:ul#todo-list
+   (for [todo (<sub [:todos/visible])]
+     ^{:key (:id todo)} [todo-item todo])])
 
 
 
 (defn todos-count []
-  (let [active-count (subscribe [:todos/active-count])]
-    (fn []
-      [:span#todo-count
-       [:strong @active-count]
-       (if (= 1 @active-count) " item " " items ") "left"])))
+  (let [active-count (<sub [:todos/active-count])]
+    [:span#todo-count
+     [:strong active-count]
+     (if (= 1 active-count) " item " " items ") "left"]))
 
 (defn todos-filters []
-  (let [display-type (subscribe [:display-type])]
-    (fn []
-      (let [selected #(if (= @display-type %) "selected" "")]
-        [:ul#filters
-         [:li [:a {:class (selected :all)  :href "#/"} "All"]]
-         [:li [:a {:class (selected :active) :href "#/active"} "Active"]]
-         [:li [:a {:class (selected :completed) :href "#/completed"} "Completed"]]]))))
+  (let [display-type (<sub [:display-type])]
+    [:ul#filters
+     [:li [:a {:class (class-> (= display-type :all) "selected")  :href "#/"} "All"]]
+     [:li [:a {:class (class-> (= display-type :active) "selected") :href "#/active"} "Active"]]
+     [:li [:a {:class (class-> (= display-type :completed) "selected") :href "#/completed"} "Completed"]]]))
+
+(defmulti notif-msg identity)
+
+(defmethod notif-msg :todos/added
+  [_ {:keys [id title]}]
+  (str "Added todo: " title))
+
+(defn notification [n]
+  [:div.notification
+   (apply notif-msg n)])
+
+(defn notifications []
+  [:div#notifications
+   [css-transition-group {:transitionName "notification"
+                          :transitionEnterTimeout 500
+                          :transitionLeaveTimeout 300}
+    (for [n (<sub [:notifications])]
+      ^{:key (pr-str n)} [notification n])]])
 
 (defn main-panel []
-  (let [todos-empty? (subscribe [:todos/empty?])]
-    (fn []
+  [:div
+   [:section#todoapp
+    [:header#header
+     [todo-input]]
+    (if-not (<sub [:todos/empty?])
       [:div
-       [:section#todoapp
-        [:header#header
-         [todo-input]]
-        (if-not @todos-empty?
-          [:div
-           [:section#main
-            [todos-toggle]
-            [todos-list]]
-           [:footer#footer
-            [todos-count]
-            [todos-filters]]])]])))
+       [:section#main
+        [todos-toggle]
+        [todos-list]]
+       [:footer#footer
+        [todos-count]
+        [todos-filters]]])]
+   [notifications]])
