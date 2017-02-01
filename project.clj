@@ -16,7 +16,8 @@
                  [ring/ring-defaults "0.2.2"]
                  [ring-middleware-format "0.7.2"]
                  [ring "1.5.1"]
-                 [spicerack "0.1.1"]]
+                 [spicerack "0.1.1"]
+                 [cljs-ajax "0.5.8"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]
             [lein-garden "0.2.8"]]

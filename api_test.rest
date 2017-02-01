@@ -1,4 +1,4 @@
-:host=http://localhost:3449
+:host=http://localhost:3000
 
 #
 GET :host/todos
@@ -10,3 +10,14 @@ Content-Type: application/edn
 
 #
 GET http://localhost:3000/
+
+#
+PUT :host/todos/9cc91926-cfc7-4541-98ea-c1fc469e6844
+Content-Type: application/json
+
+{
+"id": "9cc91926-cfc7-4541-98ea-c1fc469e6844",
+"title": "Hello, world!",
+"foo": "bar",
+"completed": true
+}

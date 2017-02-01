@@ -1,6 +1,6 @@
 (ns redolist.core
   (:require [com.stuartsierra.component :as component]
-            [compojure.core :refer [context GET POST routes]]
+            [compojure.core :refer [context DELETE GET POST PUT routes]]
             [compojure.route :refer [resources]]
             [ring.middleware.defaults :refer [api-defaults wrap-defaults]]
             [ring.middleware.format :refer [wrap-restful-format]]
@@ -9,7 +9,8 @@
             [system.components.endpoint :refer [new-endpoint]]
             [system.components.handler :refer [new-handler]]
             [system.components.http-kit :refer [new-web-server]]
-            [system.components.middleware :refer [new-middleware]]))
+            [system.components.middleware :refer [new-middleware]])
+  (:import java.util.UUID))
 
 (set! *warn-on-reflection* true)
 
@@ -49,11 +50,25 @@
      (context "/todos" _
        (GET "/" _
          {:body (get storage :todos [])})
-       (POST "/" [title]
+
+       (POST "/" {:keys [params]}
          {:body (sr/update! storage :todos (fn [todos]
                                              (if (nil? todos)
-                                               [{:title title}]
-                                               (conj todos {:title title}))))}))
+                                               [params]
+                                               (conj todos params))))})
+
+       (PUT "/:id" {:keys [params]}
+         (let [params (update params :id #(UUID/fromString %))]
+           {:body (sr/update! storage :todos (fn [todos]
+                                               (mapv #(if (= (:id %) (:id params))
+                                                        params
+                                                        %) todos)))}))
+
+       (DELETE "/:id" [id]
+         (let [id (UUID/fromString id)]
+           {:body (sr/update! storage :todos (fn [todos]
+                                               (vec (remove #(= (:id %) id) todos))))})))
+
      (resources "/"))))
 
 (defn app-system []

@@ -1,11 +1,12 @@
 (ns redolist.core
-    (:require [reagent.core :as reagent]
-              [re-frame.core :as re-frame]
-              [redolist.events]
-              [redolist.subs]
-              [redolist.routes :as routes]
-              [redolist.views :as views]
-              [redolist.config :as config]))
+  (:require [reagent.core :as reagent]
+            [re-frame.core :as re-frame]
+            ^:refactor-nrepl/keep [redolist.events]
+            ^:refactor-nrepl/keep [redolist.effects]
+            ^:refactor-nrepl/keep [redolist.subs]
+            ^:refactor-nrepl/keep [redolist.routes :as routes]
+            ^:refactor-nrepl/keep [redolist.views :as views]
+            ^:refactor-nrepl/keep [redolist.config :as config]))
 
 
 (defn dev-setup []

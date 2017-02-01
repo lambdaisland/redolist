@@ -41,7 +41,7 @@
 
 (defn todo-checkbox [id completed]
   [:input.toggle {:type "checkbox"
-                  :checked completed
+                  :checked (boolean completed)
                   :on-change #(dispatch [:todos/toggle id])}])
 
 (defn todo-edit [todo]
