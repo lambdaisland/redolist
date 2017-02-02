@@ -1,6 +1,7 @@
 (ns redolist.events
   (:require [re-frame.core :as re-frame :refer [debug reg-event-db reg-event-fx]]
-            [redolist.db :as db]))
+            [redolist.db :as db]
+            [redolist.undo :as undo :refer [undoable]]))
 
 (reg-event-fx :initialize-db
               (fn  [_ _]
@@ -16,7 +17,7 @@
                 (assoc db :todos (reduce (fn [m t]
                                            (assoc m (:id t) t)) {} todos))))
 
-(reg-event-fx :todos/add
+(reg-event-fx :todos/add [(undoable)]
               (fn [{:keys [db]} [_ title]]
                 (let [id (random-uuid)
                       todo {:id id :title title}
@@ -64,3 +65,5 @@
 (reg-event-db :set-display-type
               (fn [db [_ type]]
                 (assoc db :display-type type)))
+
+(reg-event-db :undo undo/undo-handler)

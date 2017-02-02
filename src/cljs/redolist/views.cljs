@@ -123,4 +123,5 @@
        [:footer#footer
         [todos-count]
         [todos-filters]]])]
-   [notifications]])
+   [notifications]
+   [:button {:on-click #(dispatch [:undo])} "Undo"]])
