@@ -17,7 +17,7 @@
                 (assoc db :todos (reduce (fn [m t]
                                            (assoc m (:id t) t)) {} todos))))
 
-(reg-event-fx :todos/add [(undoable)]
+(reg-event-fx :todos/add [undoable]
               (fn [{:keys [db]} [_ title]]
                 (let [id (random-uuid)
                       todo {:id id :title title}
@@ -32,16 +32,16 @@
               (fn [db [_ n]]
                 (update db :notifications (partial remove #(identical? n %)))))
 
-(reg-event-fx :todos/remove
+(reg-event-fx :todos/remove [undoable]
               (fn [{:keys [db]} [_ id]]
                 {:db (update db :todos dissoc id)
                  :api [:DELETE (str "/todos/" id)]}))
 
-(reg-event-db :todos/update [debug]
+(reg-event-db :todos/update [undoable]
               (fn [db [_ id vals]]
                 (update-in db [:todos id] merge vals)))
 
-(reg-event-fx :todos/toggle
+(reg-event-fx :todos/toggle [undoable]
               (fn [{:keys [db]} [_ id]]
                 (let [todo (get-in db [:todos id])
                       todo (update todo :completed not)
@@ -49,7 +49,7 @@
                   {:db (assoc-in db [:todos id] todo)
                    :api [:PUT (str "/todos/" id) {:params todo}]})))
 
-(reg-event-db :todos/toggle-all
+(reg-event-db :todos/toggle-all [undoable]
               (fn [db [_ id]]
                 (let [ids (keys (:todos db))
                       todos (vals (:todos db))

@@ -25,7 +25,7 @@
   (start [this]
     (if (:db this)
       this ;; idempotent
-      (let [^org.mapdb.DB db (sr/open-database path)
+      (let [^org.mapdb.DB db (sr/open-database path :transaction-enable? true)
             hook (Thread. (fn [] (.close db)))]
         (add-shutdown-hook hook) ;; prevent corruption when the JVM is killed
                                  ;; without first stopping the system

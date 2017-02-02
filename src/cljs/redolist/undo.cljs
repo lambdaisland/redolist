@@ -3,14 +3,16 @@
 
 (def undo-stack (atom ()))
 
-(defn undoable []
+(def undoable
   (re-frame/->interceptor
    :id :undoable
    :before (fn [context]
              (swap! undo-stack #(conj % (get-in context [:coeffects :db])))
              context)))
 
-(defn undo-handler [_ _]
-  (let [db (first @undo-stack)]
+(defn undo-handler [db-now _]
+  (let [db-undo (first @undo-stack)]
     (swap! undo-stack next)
-    db))
+    (if (nil? db-undo)
+      db-now
+      db-undo)))
