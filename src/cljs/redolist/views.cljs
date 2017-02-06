@@ -31,7 +31,7 @@
       [:button.destroy {}]]]))
 
 (defn todo-list []
-  (let [todos (subscribe [:visible-todos])]
+  (let [todos (subscribe [:todos])]
     (fn []
       [:div#todo-list
        (for [todo @todos]
