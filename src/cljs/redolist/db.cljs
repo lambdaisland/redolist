@@ -1,4 +1,6 @@
 (ns redolist.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:todos [{:id (random-uuid)
+            :title "Donate to charity"
+            :completed false}]})
