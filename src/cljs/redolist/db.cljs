@@ -1,4 +1,5 @@
 (ns redolist.db)
 
 (def default-db
-  {:todos {}})
+  {:todos {}
+   :display-type :all})
