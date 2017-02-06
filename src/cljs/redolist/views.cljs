@@ -25,6 +25,15 @@
   [:input.toggle {:type "checkbox"
                   :checked completed}])
 
+(defn todo-edit [id]
+  (let [todo (subscribe [:todo-by-id id])
+        title (r/atom (:title @todo))]
+    (fn [id]
+      [:input.edit {:type "text"
+                    :value @title
+                    :on-change #(reset! title (-> % .-target .-value))
+                    :auto-focus true}])))
+
 (defn todo-item [todo]
   (fn [{:keys [id completed title editing] :as todo}]
     [:li {:class (class-> completed "completed "
@@ -36,7 +45,9 @@
         :style {:user-select "none"
                 :-moz-user-select "none"}}
        title]
-      [:button.destroy {}]]]))
+      [:button.destroy {}]]
+     (when editing
+       [todo-edit id])]))
 
 (defn todo-list []
   (let [todos (subscribe [:todos])]

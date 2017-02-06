@@ -37,3 +37,7 @@
              :all all
              :completed completed
              :active active)))
+
+(reg-sub :todo-by-id
+         (fn [db [_ uuid]]
+           (get (:todos db) uuid)))
