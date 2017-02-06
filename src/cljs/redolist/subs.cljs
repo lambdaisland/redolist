@@ -8,3 +8,7 @@
 (reg-sub :todos/completed :<- [:todos]
          (fn [todos _]
            (filter :completed todos)))
+
+(reg-sub :todos/active :<- [:todos]
+         (fn [todos _]
+           (remove :completed todos)))
