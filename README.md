@@ -1,6 +1,9 @@
 # redolist
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+A [re-frame](https://github.com/Day8/re-frame) implementation of the popular TodoMVC app, as seen on [Lambda Island](http://lambdaisland.com/)
+
+- [Episode 20. re-frame Subscriptions](https://lambdaisland.com/episodes/re-frame-subscriptions)
+- Episode 25. re-frame Events and Effects (upcoming)
 
 ## Development Mode
 
