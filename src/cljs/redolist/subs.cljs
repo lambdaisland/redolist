@@ -4,3 +4,7 @@
 (reg-sub :todos
          (fn [db _]
            (vals (:todos db))))
+
+(reg-sub :todos/completed :<- [:todos]
+         (fn [todos _]
+           (filter :completed todos)))
