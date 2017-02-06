@@ -7,12 +7,6 @@ A [re-frame](https://github.com/Day8/re-frame) implementation of the popular Tod
 
 ## Development Mode
 
-### Install TodoMVC styles
-
-```
-npm install
-```
-
 ### Run application:
 
 This app uses [Component](https://github.com/stuartsierra/component) and
