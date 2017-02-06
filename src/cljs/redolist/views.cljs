@@ -3,7 +3,15 @@
             [reagent.core :as r]
             [redolist.helpers :refer [class->]]))
 
-+(defn todo-input []
+(defn toggle-all-checkbox []
+  (let [all-complete? (subscribe [:todos/all-complete?])]
+    (fn []
+      [:span
+       [:input#toggle-all {:type "checkbox"
+                           :checked @all-complete?}]
+       [:label {:for "toggle-all"} "Mark all as complete"]])))
+
+(defn todo-input []
   (let [title (r/atom "")]
     (fn []
       [:input#new-todo {:type "text"
@@ -65,6 +73,7 @@
          (when-not @todos-empty?
            [:div
             [:section#main
+             [toggle-all-checkbox]
              [todo-list]]
             [:footer#footer
              [todo-count]

@@ -19,6 +19,10 @@
          (fn [todos]
            (empty? todos)))
 
+(reg-sub :todos/all-complete? :<- [:todos/active]
+         (fn [active]
+           (empty? active)))
+
 (reg-sub :todos/active-count :<- [:todos/active]
          (fn [active]
            (count active)))
