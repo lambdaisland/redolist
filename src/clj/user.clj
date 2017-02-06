@@ -5,15 +5,17 @@
             [figwheel-sidecar.repl-api :as fw-repl-api]
             [figwheel-sidecar.system :as fw-sys]
             [garden-watcher.core :refer [new-garden-watcher]]
-
             ^:refactor-nrepl/keep
-            [reloaded.repl :refer [go init reset reset-all start stop suspend resume system clear]]))
+            [reloaded.repl :refer [go init reset reset-all start stop suspend resume system clear]]
+            [redolist.system :as system]
+            [redolist.config :as config]))
 
-(defn dev-system []
-  (component/system-map
+(defn dev-system [{:keys [css-paths css-ns] :as config}]
+  (assoc
+   (system/prod-system config)
    :figwheel-system (fw-sys/figwheel-system (fw-config/fetch-config))
-   :css-watcher (fw-sys/css-watcher {:watch-paths ["resources/public/css"]})
-   :garden-watcher (new-garden-watcher ['redolist.css])))
+   :css-watcher (fw-sys/css-watcher {:watch-paths css-paths})
+   :garden-watcher (new-garden-watcher css-ns)))
 
 (defn cljs-repl
   ([]
@@ -24,4 +26,4 @@
      (fw-repl-api/cljs-repl))))
 
 (set-refresh-dirs "src" "dev")
-(reloaded.repl/set-init! #(dev-system))
+(reloaded.repl/set-init! #(dev-system config/config))

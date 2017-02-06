@@ -32,6 +32,8 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "resources/public/css"]
 
+  :main redolist.core
+
   :figwheel {:css-dirs ["resources/public/css"]}
 
   :garden {:builds [{:id           "screen"

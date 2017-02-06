@@ -6,3 +6,5 @@ out
 .lein-repl-history
 .nrepl-port
 resources/public/css/screen.css
+redolist.mapdb
+redolist.mapdb.wal.*
