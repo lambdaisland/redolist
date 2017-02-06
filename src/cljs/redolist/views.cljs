@@ -37,7 +37,15 @@
        (for [todo @todos]
          ^{:key (:id todo)} [todo-item todo])])))
 
-(defn todos-filters []
+
+(defn todo-count []
+  (let [active-count (subscribe [:todos/active-count])]
+    (fn []
+      [:span#todo-count
+       [:strong @active-count]
+       (if (= 1 @active-count) " item " " items ") "left"])))
+
+(defn todo-filters []
   (let [display-type (subscribe [:display-type])]
     (fn []
       (let [selected #(if (= @display-type %) "selected" "")]
@@ -47,12 +55,17 @@
          [:li [:a {:class (selected :completed) :href "#/completed"} "Completed"]]]))))
 
 (defn main-panel []
-  [:div
-   [:section#todoapp
-    [:div
-     [:header#header
-      [todo-input]]
-     [:section#main
-      [todo-list]]
-     [:footer#footer
-      [todos-filters]]]]])
+  (let [todos-empty? (subscribe [:todos/empty?])]
+    (fn []
+      [:div
+       [:section#todoapp
+        [:div
+         [:header#header
+          [todo-input]]
+         (when-not @todos-empty?
+           [:div
+            [:section#main
+             [todo-list]]
+            [:footer#footer
+             [todo-count]
+             [todo-filters]]])]]])))

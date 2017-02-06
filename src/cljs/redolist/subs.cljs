@@ -15,6 +15,14 @@
          (fn [todos _]
            (remove :completed todos)))
 
+(reg-sub :todos/empty? :<- [:todos]
+         (fn [todos]
+           (empty? todos)))
+
+(reg-sub :todos/active-count :<- [:todos/active]
+         (fn [active]
+           (count active)))
+
 (reg-sub :todos/visible
          :<- [:display-type]
          :<- [:todos]
