@@ -1,6 +1,17 @@
 (ns redolist.views
   (:require [re-frame.core :as re-frame :refer [subscribe]]
+            [reagent.core :as r]
             [redolist.helpers :refer [class->]]))
+
++(defn todo-input []
+  (let [title (r/atom "")]
+    (fn []
+      [:input#new-todo {:type "text"
+                        :value @title
+                        :placeholder "What needs to be done?"
+                        :auto-focus true
+                        :on-change #(reset! title (-> % .-target .-value))}])))
+
 
 (defn todo-checkbox [id completed]
   [:input.toggle {:type "checkbox"
@@ -30,5 +41,7 @@
   [:div
    [:section#todoapp
     [:div
+     [:header#header
+      [todo-input]]
      [:section#main
       [todo-list]]]]])
