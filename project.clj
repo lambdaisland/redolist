@@ -27,9 +27,7 @@
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "0.8.2"]]
-
-    :plugins      [[lein-figwheel "0.5.7"]]
-    }}
+    :plugins      [[lein-figwheel "0.5.7"]]}}
 
   :cljsbuild
   {:builds
@@ -51,9 +49,4 @@
                     :output-to       "resources/public/js/compiled/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}
-                    :pretty-print    false}}
-
-
-    ]}
-
-  )
+                    :pretty-print    false}}]})
