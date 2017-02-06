@@ -1,6 +1,5 @@
 (ns redolist.css
-  (:require [garden.def :refer [defstyles]]))
+  (:require [garden-watcher.def :refer [defstyles]]))
 
 (defstyles screen
-  [:body {:color "red"}]
-)
+  [:body {:color "red"}])

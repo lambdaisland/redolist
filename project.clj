@@ -3,6 +3,7 @@
                  [org.clojure/clojurescript "1.9.456"]
 
                  ;; Frontend
+                 [cljsjs/react "15.4.2-2"]
                  [cljsjs/react-with-addons "15.4.2-2"]
                  [cljsjs/react-dom "15.4.2-2"]
                  [cljsjs/react-dom-server "15.4.2-2"]
@@ -52,7 +53,9 @@
                    [reloaded.repl "0.2.3"]
                    [ns-tracker "0.3.1"]]
 
-    :plugins      [[lein-figwheel "0.5.9"]]}}
+    :plugins      [[lein-figwheel "0.5.9"]]}
+   :garden
+   {:dependencies [[cljsjs/react "15.4.2-2"]]}}
 
   :cljsbuild
   {:builds

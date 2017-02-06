@@ -6,3 +6,4 @@ out
 .lein-repl-history
 .nrepl-port
 node_modules
+resources/public/css/screen.css
