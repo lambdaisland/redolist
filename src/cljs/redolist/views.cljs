@@ -50,7 +50,7 @@
        [todo-edit id])]))
 
 (defn todo-list []
-  (let [todos (subscribe [:todos])]
+  (let [todos (subscribe [:todos/visible])]
     (fn []
       [:div#todo-list
        (for [todo @todos]

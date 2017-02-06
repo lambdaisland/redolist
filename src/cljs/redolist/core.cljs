@@ -19,5 +19,6 @@
 
 (defn ^:export init []
   (re-frame/dispatch-sync [:initialize-db])
+  (routes/app-routes)
   (dev-setup)
   (mount-root))

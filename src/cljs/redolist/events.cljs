@@ -1,8 +1,11 @@
 (ns redolist.events
-    (:require [re-frame.core :as re-frame]
-              [redolist.db :as db]))
+  (:require [re-frame.core :refer [reg-event-db]]
+            [redolist.db :as db]))
 
-(re-frame/reg-event-db
- :initialize-db
- (fn  [_ _]
-   db/default-db))
+(reg-event-db :initialize-db
+              (fn  [_ _]
+                db/default-db))
+
+(reg-event-db :set-display-type
+              (fn [db [_ type]]
+                (assoc db :display-type type)))
