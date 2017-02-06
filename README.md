@@ -7,18 +7,10 @@ A [re-frame](https://github.com/Day8/re-frame) implementation of the popular Tod
 
 ## Development Mode
 
-### Compile css:
-
-Compile css file once.
+### Install TodoMVC styles
 
 ```
-lein garden once
-```
-
-Automatically recompile css file on change.
-
-```
-lein garden auto
+npm install
 ```
 
 ### Run application:
