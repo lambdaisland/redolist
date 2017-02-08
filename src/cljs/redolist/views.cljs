@@ -3,13 +3,13 @@
             [reagent.core :as r]
             [redolist.helpers :refer [class->]]))
 
+(def <sub (comp deref subscribe))
+
 (defn toggle-all-checkbox []
-  (let [all-complete? (subscribe [:todos/all-complete?])]
-    (fn []
-      [:span
-       [:input#toggle-all {:type "checkbox"
-                           :checked @all-complete?}]
-       [:label {:for "toggle-all"} "Mark all as complete"]])))
+  [:span
+   [:input#toggle-all {:type "checkbox"
+                       :checked (<sub [:todos/all-complete?])}]
+   [:label {:for "toggle-all"} "Mark all as complete"]])
 
 (defn todo-input []
   (let [title (r/atom "")]
@@ -19,7 +19,6 @@
                         :placeholder "What needs to be done?"
                         :auto-focus true
                         :on-change #(reset! title (-> % .-target .-value))}])))
-
 
 (defn todo-checkbox [id completed]
   [:input.toggle {:type "checkbox"
@@ -50,42 +49,34 @@
        [todo-edit id])]))
 
 (defn todo-list []
-  (let [todos (subscribe [:todos/visible])]
-    (fn []
-      [:div#todo-list
-       (for [todo @todos]
-         ^{:key (:id todo)} [todo-item todo])])))
-
+  [:div#todo-list
+   (for [todo (<sub [:todos])]
+     ^{:key (:id todo)} [todo-item todo])])
 
 (defn todo-count []
-  (let [active-count (subscribe [:todos/active-count])]
-    (fn []
-      [:span#todo-count
-       [:strong @active-count]
-       (if (= 1 @active-count) " item " " items ") "left"])))
+  (let [active-count (<sub [:todos/active-count])]
+    [:span#todo-count
+     [:strong active-count]
+     (if (= 1 active-count) " item " " items ") "left"]))
 
 (defn todo-filters []
-  (let [display-type (subscribe [:display-type])]
-    (fn []
-      (let [selected #(if (= @display-type %) "selected" "")]
-        [:ul#filters
-         [:li [:a {:class (selected :all)  :href "#/"} "All"]]
-         [:li [:a {:class (selected :active) :href "#/active"} "Active"]]
-         [:li [:a {:class (selected :completed) :href "#/completed"} "Completed"]]]))))
+  (let [selected #(if (= (<sub [:display-type]) %) "selected" "")]
+    [:ul#filters
+     [:li [:a {:class (selected :all)  :href "#/"} "All"]]
+     [:li [:a {:class (selected :active) :href "#/active"} "Active"]]
+     [:li [:a {:class (selected :completed) :href "#/completed"} "Completed"]]]))
 
 (defn main-panel []
-  (let [todos-empty? (subscribe [:todos/empty?])]
-    (fn []
-      [:div
-       [:section#todoapp
-        [:div
-         [:header#header
-          [todo-input]]
-         (when-not @todos-empty?
-           [:div
-            [:section#main
-             [toggle-all-checkbox]
-             [todo-list]]
-            [:footer#footer
-             [todo-count]
-             [todo-filters]]])]]])))
+  [:div
+   [:section#todoapp
+    [:div
+     [:header#header
+      [todo-input]]
+     (when-not (<sub [:todos/empty?])
+       [:div
+        [:section#main
+         [toggle-all-checkbox]
+         [todo-list]]
+        [:footer#footer
+         [todo-count]
+         [todo-filters]]])]]])
