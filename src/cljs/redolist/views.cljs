@@ -50,7 +50,7 @@
 
 (defn todo-list []
   [:div#todo-list
-   (for [todo (<sub [:todos])]
+   (for [todo (<sub [:todos/visible])]
      ^{:key (:id todo)} [todo-item todo])])
 
 (defn todo-count []
