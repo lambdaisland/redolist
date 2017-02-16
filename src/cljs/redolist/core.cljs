@@ -3,9 +3,9 @@
               [re-frame.core :as re-frame]
               [redolist.events]
               [redolist.subs]
+              [redolist.routes :as routes]
               [redolist.views :as views]
               [redolist.config :as config]))
-
 
 (defn dev-setup []
   (when config/debug?
