@@ -12,6 +12,7 @@
                  [secretary "1.2.3"]
                  [cljs-ajax "0.5.8"]
                  [garden "1.3.2"]
+                 [re-frisk "0.3.2"]
 
                  ;; Backend
                  [com.stuartsierra/component "0.3.2"]
@@ -33,6 +34,8 @@
                                     "resources/public/css"]
 
   :main redolist.core
+
+  :repl-options {:init-ns user}
 
   :figwheel {:css-dirs ["resources/public/css"]}
 
